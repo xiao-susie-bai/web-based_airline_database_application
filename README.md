@@ -1,1 +1,1 @@
-# web-based_airline_database_application
+# Web-based Air Ticket Reservation & Management Relational Database Application (Python Flask, SQL, HTML/JS/CSS)
