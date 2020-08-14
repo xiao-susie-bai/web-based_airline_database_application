@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body>
+
+<form action="/registerAuth_staff" method="POST">
+	<h3>Welcome, new staff.</h3>
+	<h3>Step 2: Fill out the form to complete registration</h3>
+		<label>Username:</label>
+		<input type="text" name = "staff_username" placeholder="stevejobs123" required/> </br>
+		<label>Password:</label>
+		<input type="password" name = "staff_password" placeholder="**********" required/></br>
+		<label>First Name:</label>
+		<input type="text" name = "staff_first_name" placeholder="John" required/></br>
+		<label>Last Name:</label>
+		<input type="text" name = "staff_last_name" placeholder="Anderson" required/></br>
+		<label>Birth Date</label>
+		<input type="date" name = "staff_birthdate" placeholder="YYYY-MM-DD" required/></br>
+		<label>Airline:</label>
+		<input type="text" name = "staff_airline" placeholder="China Eastern" required/></br>
+		<label>Phone Number (separated by "," if multiple):</label>
+		<input type="text" name = "phone_number" placeholder="15680002889" required/></br>
+		<input type="submit" value = Register />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+
+</form>
+<a href="/">Go back</a>
+</body>
+</html>

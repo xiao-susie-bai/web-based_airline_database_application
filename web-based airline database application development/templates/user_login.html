@@ -1,0 +1,28 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/loginAuth" method="POST">
+	<h3>Login</h3>
+	<label>Username/email:</label>
+	<input type="text" name = "username" placeholder="myemail@gmail.com" required/> </br>
+	<label>Password:</label>
+	<input type="password" name = "password" placeholder="*********" required/></br>
+	<label>I am </label>
+	<select name = "user_type">
+  	<option value="customer">Customer</option>
+ 	<option value="booking_agent">Agent</option>
+  	<option value="airline_staff">Airline Staff</option>
+	</select>
+	<input type="submit" value = Login />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+
+<a href="/">Go back</a>
+
+</body>
+
+
+</html>

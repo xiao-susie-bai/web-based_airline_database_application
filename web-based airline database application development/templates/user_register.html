@@ -1,0 +1,75 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/registerAuth" method="POST">
+	<label>Select the user type to register</label>
+	<select name = "user_type">
+  	<option value="customer">Customer</option>
+ 	<option value="booking_agent">Agent</option>
+  	<option value="airline_staff">Airline Staff</option>
+	</select>
+	
+	
+	{% if customer %}
+		<label>Email:</label>
+		<input type="text" name = "email" placeholder="myemail@gmail.com" required/> </br>
+		<label>Password:</label>
+		<input type="password" name = "password" placeholder="**********" required/></br>
+		<label>Name:</label>
+		<input type="text" name = "name" placeholder="John Anderson" required/></br>
+		<label>Phone Number:</label>
+		<input type="text" name = "phone_number" placeholder="+11655639987" required/></br>
+		<label>Address: Building Number</label>
+		<input type="text" name = "address_building_number" placeholder="No. 14" required/></br>
+		<label>Address: Street</label>
+		<input type="text" name = "address_street" placeholder="Century Avenue" required/></br>
+		<label>Address: City</label>
+		<input type="text" name = "address_city" placeholder="Shanghai" required/></br>
+		<label>Address: State</label>
+		<input type="text" name = "address_state" placeholder="Shanghai" required/></br>
+		<label>Passport: Number</label>
+		<input type="text" name = "passport_number" placeholder="N-15099840" required/></br>
+		<label>Passport: Expiration Date</label>
+		<input type="date" id="passport_expiration" name="passport_expiration" value="2019-01-01" required/></br>
+		<label>Passport: Country</label>
+		<input type="text" name = "passport_country" placeholder="CHINA" required/></br>
+		<label>Birth Date</label>
+		<input type="date" id="birthdate" name="birthdate" value="2019-01-01" required/></br>
+		<input type="submit" value = Register />
+	{% endif %}
+
+	{% if booking_agent %}
+		<label>Email:</label>
+		<input type="text" name = "agent_email" placeholder="myemail@gmail.com" required/> </br>
+		<label>Password:</label>
+		<input type="password" name = "agent_password" placeholder="**********" required/></br>
+		<label>Booking Agent ID:</label>
+		<input type="text" name = "booking_agent_ID" placeholder="12345" required/></br>
+		<input type="submit" value = Register />
+	{% endif %}
+
+	{% if airline_staff %}
+		<label>Email:</label>
+		<input type="text" name = "staff_email" placeholder="myemail@gmail.com" required/> </br>
+		<label>Password:</label>
+		<input type="password" name = "staff_password" placeholder="**********" required/></br>
+		<label>First Name:</label>
+		<input type="text" name = "staff_first_name" placeholder="John" required/></br>
+		<label>Last Name:</label>
+		<input type="text" name = "staff_last_name" placeholder="Anderson" required/></br>
+		<label>Birth Date</label>
+		<input type="date" id="staff_birthdate" name="staff_birthdate" value="2019-01-01" required/></br>
+		<label>Airline:</label>
+		<input type="text" name = "staff_airline" placeholder="China Eastern" required/></br>
+		<input type="submit" value = Register />
+	{% endif %}
+
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+
+</form>
+<a href="/">Go back</a>
+</body>
+</html>

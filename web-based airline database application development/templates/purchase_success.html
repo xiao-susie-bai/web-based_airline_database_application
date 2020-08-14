@@ -1,0 +1,59 @@
+<html>
+<head>
+</head>
+<body>
+<h2>You are all set. </h2>
+<h3>Ticket Information: </h3>
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+<table>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>	
+	<th>Status</th>
+	<th>Ticket ID</th>
+{% for line in data %}
+
+	<tr>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['flight_status']}}</td>
+		<td>{{line['ticket_ID']}}</td>
+
+    </tr>
+ {% endfor %}
+
+   </table>
+
+{% if customer %}
+<a href="/customer_home">Go Back</a><br>
+{% endif %}
+{% if agent %}
+<a href="/agent_home">Go Back</a><br>
+{% endif %}
+{% if staff %}
+<a href="/staff_home">Go Back</a><br>
+{% endif %}
+{% if not customer %}
+{% if not agent %}
+{% if not staff %}
+<a href="/">Go Back</a><br>
+{% endif %}
+{% endif %}
+{% endif %}
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

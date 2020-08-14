@@ -1,0 +1,266 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>All Your Flight:</h2>
+<!-- 	<input type="text" name = "blog" placeholder="post" required/> </br>
+	<input type="submit" value = Post /> -->
+<!-- </form>
+ -->
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+<!-- upcoming 30-day and historical 30-day flights as DEFAULT VIEW -->
+<h4>Upcoming Flights Operated by My Airline in the next 30 days</h4>
+{% if upcoming_flight %}    <!-- ***IMPORTANT: "if" statement used to test if a variable is define/not empty(the case here?)/not False! -->
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in upcoming_flight %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> 
+
+{% endif %}
+
+{% if not upcoming_flight %}
+	<p class="noresult"><strong>You don't have any upcoming flight.</strong></p><br>
+{% endif %}
+
+<h4>Historical Flights Operated by My Airline in the past 30 days</h4>
+{% if historical_flight %}
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in historical_flight %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if not historical_flight %}
+	<p class="noresult"><strong>You don't have any historical flight.</strong></p><br>
+{% endif %}
+
+
+
+<form action="/allflight_filter" method = "Post">
+
+<h4>Filter by date range</h4>      <!-- Important Notice: actually user specified month range! -->
+
+<label>Start Date:</label>
+<input type="month" name = "start_date" placeholder="YYYY-MM" > </br>
+<label>End Date:</label>
+<input type="month" name = "end_date" placeholder="YYYY-MM" ></br>
+<input type="submit" value = Filter />
+
+{% if all_flight_by_date %}
+	<h4>Filter Result: All Flights operated by My Airline Within the Date Range</h4>
+
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_flight_by_date %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if all_previous_flight_by_date %}
+	<h4>Filter Result: All Flights operated by My Airline Before the Date Range</h4>
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_previous_flight_by_date %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+{% endif %}
+
+{% if all_future_flight_by_date %}
+	<h4>Filter Result: All Flights operated by My Airline After the Date Range</h4>
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_future_flight_by_date %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if not all_flight_by_date %}
+<h4>No Filter Result Within the Date Range</h4>
+{% endif %}
+
+{% if not all_previous_flight_by_date %}
+<h4>No Filter Result Before the Date Range</h4>
+{% endif %}
+
+{% if not all_future_flight_by_date %}
+<h4>No Filter Result After the Date Range</h4>
+{% endif %}
+
+
+<h4>Filter by airport/city</h4>
+
+<label for="source">Source Airport/City:</label>
+<input type="text" name="source" placeholder="PVG"></br>
+<label for="destination">Destination Airport/City:</label>
+<input type="text" name="destination" placeholder="JFK"></br>
+<input type="submit" value = Filter />
+
+{% if all_flight_by_source_destination %}
+	<h4>Filter Result</h4>
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_flight_by_source_destination %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if not all_flight_by_source_destination %}
+<h4>No Filter Result</h4>
+{% endif %}
+
+
+</form>
+
+
+<!-- Now let the user search for all customers of a particular flight he/she is interested in -->
+<form action="/view_flight_all_customer" method = "Post">
+
+<!-- Notice: "flight_ID" AND "departure_time" defines a unique flight! "airline" is already taken within the session as persistent value("default") so no need to input again! -->
+
+<!-- Important detail pending: consider the situation when the user only input part of the two(e.g.: only "flight_ID" or only "departure_time")? -> "Error message"? -->
+
+<label for="flightID">Enter the Flight Number you want to view all customers for:</label>
+<input type="text" name="flightID_for_allcustomer" placeholder="8893"></br>
+<label for="departure_time">And, Enter the Departure Time of the Flight you want to view all customers for:</label>
+<input type="text" name="departure_time_for_allcustomer" placeholder="2019-03-20 09:55:00"></br>
+<input type="submit" value=View />
+
+</form>
+
+{% if flight_all_customer %}
+	<h4>All Customers for the flight</h4>
+
+	<table>
+	<th>Customer Email</th>
+	<th>Customer Name</th>
+{% for line in flight_all_customer %}
+	<tr>
+		<td>{{line['email_customer']}}</td>
+		<td>{{line['name']}}</td>
+	<tr>
+{% endfor %}
+	</table> <br>
+{% endif %}
+
+{% if not flight_all_customer %}
+<h4>No customer result</h4>
+{% endif %}
+
+
+
+<!-- This session is for "staff" only -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

@@ -1,0 +1,89 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+{% if confirmation_message %}
+<h4>{{confirmation_message}}</h4>
+{% endif %}
+
+<!-- upcoming 30-day flights as DEFAULT VIEW -->
+
+<h4>Upcoming Flights Operated by My Airline in the next 30 days</h4>
+{% if upcoming_flight %}    <!-- ***IMPORTANT: "if" statement used to test if a variable is define/not empty(the case here?)/not False! -->
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in upcoming_flight %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> 
+
+{% endif %}
+
+{% if not upcoming_flight %}
+	<p class="noresult"><strong>You don't have any upcoming flight.</strong></p><br>
+{% endif %}
+
+<h3>Enter information for the new flight you want to create:</h3>
+
+<form action="/flight_creating_process" method = "Post">
+	<label>Flight ID:</label>
+	<input type="text" name="flightID" placeholder="1233" required/></br>
+	<label>Departure Time:</label>
+	<input type="text" name="departure_time" placeholder="2019-04-08 12:30:00" required/></br>
+	<label>Arrival Time:</label>
+	<input type="text" name="arrival_time" placeholder="2019-04-08 15:35:00" required/></br>
+	<label>Base Price:</label>
+	<input type="text" name="base_price" placeholder="3002" required/></br>
+	<label>Airplane ID:</label>
+	<input type="text" name="airplane_ID" placeholder="B-0909" required/></br>
+	<label>Departure Airport:</label>
+	<input type="text" name="departure_airport" placeholder="PVG" required/></br>
+	<label>Arrival Airport:</label>
+	<input type="text" name="arrival_airport" placeholder="JFK" required/></br>
+	<label>Flight Status:</label>
+	<input type="text" name="flight_status" placeholder="On Time" required/></br>
+	
+	<input type="submit" value = Create />
+</form> </br>
+
+{% if error %}
+<h4>{{error}}</h4>
+{% endif %}
+
+{% if invalid %}
+<h4>{{invalid}}</h4>
+{% endif %}
+
+
+<!-- This session is for "staff" only -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

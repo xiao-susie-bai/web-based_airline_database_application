@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+
+	<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+	<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+	ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
+
+</head>
+
+<!-- ***IMPORTANT: there are two graphs!!! --> 
+<style type="text/css">    
+	html, body, #myChart1, #myChart2{
+		height: 80%;
+		width: 80%
+	}
+</style>
+
+
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>My Top 5 Clients</h2>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+<h4>Top 5 Clients Based On Total Number of Tickets Purchased during the past 6 months</h4>
+{% if top5_client_ticket_sales_past6months %}
+	<table>
+	<th>Email</th>
+	<th>Name</th>
+	<th>Phone Number</th>
+	<th>Birthdate</th>
+	<th>Passport Country</th>
+	<th>City</th>
+	<th>Total Number of Tickets Purchased</th>
+{% for line in top5_client_ticket_sales_past6months %}
+	<tr>
+		<td>{{line['email']}}</td>
+		<td>{{line['name']}}</td>
+		<td>{{line['phone_number']}}</td>
+		<td>{{line['birth_date']}}</td>
+		<td>{{line['passport_country']}}</td>
+		<td>{{line['city']}}</td>
+		<td>{{line['ticket_number']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+
+{% if not top5_client_ticket_sales_past6months %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+
+<h4>Top 5 Clients Based On Total Amount of Commission during the past year</h4>
+{% if top5_client_commission_pastyear %}
+	<table>
+	<th>Email</th>
+	<th>Name</th>
+	<th>Phone Number</th>
+	<th>Birthdate</th>
+	<th>Passport Country</th>
+	<th>City</th>
+	<th>Total Commission Received</th>	
+{% for line in top5_client_commission_pastyear %}
+	<tr>
+		<td>{{line['email']}}</td>
+		<td>{{line['name']}}</td>
+		<td>{{line['phone_number']}}</td>
+		<td>{{line['birth_date']}}</td>
+		<td>{{line['passport_country']}}</td>
+		<td>{{line['city']}}</td>
+		<td>{{line['commission']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+
+{% if not top5_client_commission_pastyear %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<!-- IMPORTANT PENDING: TWO GRAPHS!!!!!!!! -->
+{% if top5_client_ticket_sales_past6months %}        <!-- only when there's data(client), display the graph -->
+<h3>My Top 5 Clients Based On Total Number of Tickets Purchased during the past 6 months:</h3>
+<div id='myChart1'></div>          <!-- The First Graph! -->
+{% endif %}
+
+{%if top5_client_commission_pastyear %}        <!-- only when there's data, display the graph -->
+<h3>My Top 5 Clients Based On Total Amount of Commission during the past year:</h3>
+<div id='myChart2'></div>        <!-- The Second Graph! -->
+{% endif %}
+
+<!-- First Graph -->
+<script type="text/javascript">
+	var PeopleList1 = {{peoplelist1|safe }}
+	var TicketList = {{ticketlist|safe }}
+	console.log(PeopleList1, TicketList)      //ready for debugging
+	var title1 = "Your Top 5 Clients Based On Number of Tickets Purchased"
+
+	var myConfig1 = {
+	type: "bar",
+	plotarea: {
+	adjustLayout:true
+	},
+	scaleX: {
+	label:{
+	text: title1
+	}, labels: PeopleList1
+	}, series: [{values: TicketList}]
+	};
+
+zingchart.render({
+	id: 'myChart1',
+	data: myConfig1,
+	height: "100%",
+	width: "100%"
+});
+
+</script>
+
+
+<!-- Second Graph -->
+<script type="text/javascript">
+	var PeopleList2 = {{peoplelist2|safe }}
+	var CommissionList = {{commissionlist|safe }}
+	console.log(PeopleList2, CommissionList)      //ready for debugging
+	var title2 = "Your Top 5 Clients Based On Total Commission Received"
+	
+	var myConfig2 = {
+	type: "bar",
+	plotarea: {
+	adjustLayout:true
+	},
+	scaleX: {
+	label:{
+	text: title2
+	}, labels: PeopleList2
+	}, series: [{values: CommissionList}]
+	};
+
+zingchart.render({
+	id: 'myChart2',
+	data: myConfig2,
+	height: "100%",
+	width: "100%"
+});
+
+</script>
+
+
+<!-- Important: this user case is "agent only" -->
+<a href="/agent_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

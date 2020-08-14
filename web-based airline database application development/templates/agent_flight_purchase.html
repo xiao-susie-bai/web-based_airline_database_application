@@ -1,0 +1,104 @@
+<html>
+<head>
+</head>
+<body>
+<h2>Welcome {{username}}</h2>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+{%if customer_error %}
+	<p class="noresult"><strong>This customer does not exist. Try again.</strong></p>
+
+	<!-- ask the user to enter customer again -->
+<form action="/agent_flight_purchase_process" method="POST">
+<label>Enter the email of the customer you are purchasing for:</label>
+<input type="text" name = "customer_represented" placeholder="baixiao@gmail.com" required/> </br>
+<input type="submit" value = Book />
+</form>
+	
+{% endif %}
+
+{% if not customer_error %}
+<h3>Your are booking flight:</h3>
+	<table>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>	
+	<th>Price</th>
+	<th>Status</th>
+{% for line in flight_info %}
+
+	<tr>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['price']}}</td>
+		<td>{{line['flight_status']}}</td>
+    	</tr>
+ {% endfor %}
+
+   	</table>
+
+<h3>Your client's travel information:</h3>
+	<table>
+	<th>Client's Email</th>
+	<th>Client's Name</th>
+	<th>Client's Phone Number</th>
+	<th>Client's Passport Number</th>
+
+{% for line in customer_info_rep %}
+
+	<tr>
+		<td>{{customer_represented}}</td>
+		<td>{{line['name']}}</td>
+		<td>{{line['phone_number']}}</td>
+		<td>{{line['passport_number']}}</td>
+    </tr>
+ {% endfor %}
+
+   	</table>
+
+<h3>Enter payment Information:</h3> 
+
+<form action="/agent_paying_process" method="POST">
+	<label>Card Type:</label>
+	<select name = "card_type">
+  	<option value="credit">Credit Card</option>
+ 	<option value="debit">Debit Card</option>
+	</select>
+	<label>Card Number:</label>
+	<input type="text" name = "card_number" placeholder="12345678909876" required/> </br>
+	<label>Card Holder:</label>
+	<input type="text" name = "card_holder" placeholder="John Anderson" required/></br>
+	<label>Security Code:</label>
+	<input type="text" name = "security_code" placeholder="123" required/></br>
+	<label>Expiration Date:</label>
+	<input type="date" name = "card_expiration" placeholder="YYYY-MM-DD" required/></br>
+<!-- 	<label>Confirm the email of the customer you are purchasing for:</label>
+	<input type="text" name = "customer_represented" placeholder="baixiao@gmail.com" required/> </br> -->
+
+	<input type="submit" value = Book />
+	
+</form>
+
+{% endif %}
+
+<a href="/flight_search">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

@@ -1,0 +1,58 @@
+<html>
+<head>
+</head>
+<body>
+
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+{% if upcoming_flight %}
+	<h4>Upcoming Flight</h4>
+	<table>
+	<th>Customer Email</th>
+	<th>Ticket ID</th>
+	<th>Departure Time</th>       <!--don't add newline symbol; continue-->
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	{% for line in upcoming_flight %}     <!-- "upcoming_flight"(result from "fetchall()") is a dictionary like thing! -->
+	<tr>
+		<td>{{line['email_customer']}}</td>
+		<td>{{line['ticket_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% endif %}
+
+{% if not upcoming_flight %}      <!-- no upcoming flight data, display message -->
+	<p class="noresult"><strong>You don't have any upcoming flight.</strong></p><br>
+{% endif %}
+
+<a href="/agent_all_flight">View All Flight Tickets</a><br>
+<a href="/flight_search">Search Flight and Purchase</a><br>   <!--completed: the subsequent purchase process has some differences -->
+<a href="/view_my_commission">View My Commission</a><br>
+<a href="/view_top_customers">View Top Customers</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

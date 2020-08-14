@@ -1,0 +1,368 @@
+<html>
+<head>
+</head>
+<body>
+<!-- <form action="/post" method="POST">
+ -->	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ {% if customer %}
+ 		<h2>All Your Flights:</h2>
+ {% endif %}
+  {% if agent %}
+ 		<h2>All Your Tickets:</h2>
+ {% endif %}
+<!-- 	<input type="text" name = "blog" placeholder="post" required/> </br>
+	<input type="submit" value = Post /> -->
+<!-- </form>
+ -->
+ <style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+{% if customer %}
+{% if not all_flight_by_source_destination %}     <!-- * delete these two conditions to keep displaying  upcoming and historical flights all the time? -->
+{% if not all_flight_by_date %}	
+<h4>Upcoming Flight</h4>
+{% if upcoming_flight %}    <!-- ***IMPORTANT: "if" statement used to test if a variable is define/not empty(the case here)/not False! -->
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in upcoming_flight %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> 
+
+
+{% endif %}
+
+{% if not upcoming_flight %}
+	<p class="noresult"><strong>You don't have any upcoming flight.</strong></p><br>
+{% endif %}
+
+<h4>Historical Flight</h4>
+{% if historical_flight %}
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in historical_flight %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+
+{% endif %}
+
+{% if not historical_flight %}
+	<p class="noresult"><strong>You don't have any historical flight.</strong></p><br>
+{% endif %}
+
+{% endif %}
+{% endif %}
+
+
+{% endif %}
+
+{% if agent %}
+{% if not all_flight_by_source_destination %}     <!-- * delete these two conditions to keep displaying  upcoming and historical flights all the time? -->
+{% if not all_flight_by_date %}	
+<h4>Tickets of Upcoming Flight</h4>
+{% if upcoming_flight %}    <!-- ***IMPORTANT: "if" statement used to test if a variable is define/not empty(the case here)/not False! -->
+
+	<table>
+	<th>Customer Email</th>
+	<th>Ticket ID</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in upcoming_flight %}
+	<tr>
+		<td>{{line['email_customer']}}</td>
+		<td>{{line['ticket_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> 
+
+
+{% endif %}
+
+{% if not upcoming_flight %}
+	<p class="noresult"><strong>You don't have any upcoming flight.</strong></p><br>
+{% endif %}
+
+<h4>Tickets of Historical Flight</h4>
+{% if historical_flight %}
+
+	<table>
+	<th>Customer Email</th>
+	<th>Ticket ID</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in historical_flight %}	
+	<tr>
+		<td>{{line['email_customer']}}</td>
+		<td>{{line['ticket_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+
+{% endif %}
+
+{% if not historical_flight %}
+	<p class="noresult"><strong>You don't have any historical flight.</strong></p><br>
+{% endif %}
+
+{% endif %}
+{% endif %}
+
+
+{% endif %}
+
+
+
+
+<form action="/allflight_filter" method = "Post">
+{% if customer %}
+<h4>Filter by date range</h4>
+
+<label>Start Date:</label>
+<input type="month" name = "start_date" placeholder="YYYY-MM" > </br>
+<label>End Date:</label>
+<input type="month" name = "end_date" placeholder="YYYY-MM" ></br>
+<input type="submit" value = Filter />
+
+{% if all_flight_by_date %}
+	<h4>Filter Result</h4>
+
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_flight_by_date %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+
+{% endif %}
+
+<h4>Filter by airport/city</h4>
+
+<label for="source">Source Airport/City:</label>
+<input type="text" name="source" placeholder="PVG"></br>
+<label for="destination">Destination Airport/City:</label>
+<input type="text" name="destination" placeholder="JFK"></br>
+<input type="submit" value = Filter />
+
+{% if all_flight_by_source_destination %}
+	<h4>Filter Result</h4>
+
+
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_flight_by_source_destination %}	
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+
+{% endif %}
+
+{% if not all_flight_by_source_destination %}
+{% if not all_flight_by_date %}	
+<h4>No Filter Result</h4>
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if agent %}
+
+<h4>Filter by date range</h4>
+
+<label>Start Date:</label>
+<input type="date" name = "start_date" placeholder="YYYY-MM" > </br>
+<label>End Date:</label>
+<input type="date" name = "end_date" placeholder="YYYY-MM" ></br>
+<input type="submit" value = Filter />
+
+{% if all_flight_by_date %}
+	<h4>Filter Result</h4>
+
+
+	<table>
+	<th>Customer Email</th>
+	<th>Ticket ID</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_flight_by_date %}	
+	<tr>
+		<td>{{line['email_customer']}}</td>
+		<td>{{line['ticket_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+
+{% endif %}
+
+<h4>Filter by airport/city</h4>
+
+<label for="source">Source Airport/City:</label>
+<input type="text" name="source" placeholder="PVG"></br>
+<label for="destination">Destination Airport/City:</label>
+<input type="text" name="destination" placeholder="JFK"></br>
+<input type="submit" value = Filter />
+
+{% if all_flight_by_source_destination %}
+	<h4>Filter Result</h4>
+
+
+	<table>
+	<th>Customer Email</th>
+	<th>Ticket ID</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+{% for line in all_flight_by_source_destination %}	
+	<tr>
+		<td>{{line['email_customer']}}</td>
+		<td>{{line['ticket_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+
+{% endif %}
+
+{% if not all_flight_by_source_destination %}
+{% if not all_flight_by_date %}	
+<h4>No Filter Result</h4>
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+
+</form>
+
+
+
+
+<a href="/flight_search">Search Flight and Purchase</a><br>
+{% if customer %}
+<a href="/customer_home">Go Back</a><br>
+{% endif %}
+{% if agent %}
+<a href="/agent_home">Go Back</a><br>
+{% endif %}
+{% if staff %}
+<a href="/staff_home">Go Back</a><br>
+{% endif %}
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

@@ -1,0 +1,93 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>The Most Frequent Customer For My Airline</h2>
+
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+<!-- most frequent customer for the airline during the past year -->
+<h4>The Most Frequent Customer during the past year (past trips based on departure time)</h4>
+{% if most_frequent_customer %}
+	<table>
+	<th>Email</th>
+	<th>Name</th>
+	<th>Phone Number</th>
+	<th>Birthdate</th>
+	<th>Passport Country</th>
+	<th>City</th>
+	<th>Total Trips Taken (by tickets) </th>
+{% for line in most_frequent_customer %}
+	<tr>
+		<td>{{line['email']}}</td>
+		<td>{{line['name']}}</td>
+		<td>{{line['phone_number']}}</td>
+		<td>{{line['birth_date']}}</td>
+		<td>{{line['passport_country']}}</td>
+		<td>{{line['city']}}</td>
+		<td>{{line['total_ticket_purchased']}}</td>
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if not most_frequent_customer %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+
+<!-- Now let the user search for all customers of a particular flight he/she is interested in -->
+<form action="/view_customer_all_flight_processing" method = "Post">
+
+<label for="Email">Enter the Customer Email you want to view all flights taken for:</label>
+<input type="text" name="customer_email" placeholder="susie_bx@hotmail.com" required/></br>
+<input type="submit" value=View />
+
+</form>
+
+{% if customer_all_flight %}
+	<h4>All Flights in My Airline Taken By This Customer</h4>
+
+	<table>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+{% for line in customer_all_flight %}
+	<tr>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+	<tr>
+{% endfor %}
+	</table> <br>
+{% endif %}
+
+{% if not customer_all_flight %}
+<h4>No flight result.</h4>
+{% endif %}
+
+
+
+<!-- This session is for "staff" only -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

@@ -1,0 +1,70 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>Top Destinations within My Airline</h2>
+
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+<!-- most frequent customer for the airline during the past year -->
+<h4>Top 3 Most Popular Destinations during the past 3 months</h4>
+{% if top3_destinations_past3months %}
+	<table>
+	<th>Destination Airport</th>
+	<th>Destination City</th>
+	<th>Total Passenger Traffic</th>
+{% for line in top3_destinations_past3months %}
+	<tr>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['city']}}</td>
+		<td>{{line['total_travellers']}}</td>     <!--***IMPORTANT NOTICE: the database query result must align with the column name!!!-->
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if not top3_destinations_past3months %}     <!-- very rare case: no flight so far -->
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<h4>Top 3 Most Popular Destinations during the past year</h4>
+{% if top3_destinations_pastyear %}
+	<table>
+	<th>Destination Airport</th>
+	<th>Destination City</th>
+	<th>Total Passenger Traffic</th>
+{% for line in top3_destinations_pastyear %}
+	<tr>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['city']}}</td>
+		<td>{{line['total_travellers']}}</td>     <!--***IMPORTANT NOTICE: the database query result must align with the column name!!!-->
+	</tr>
+{% endfor %}
+	</table> <br>
+
+{% endif %}
+
+{% if not top3_destinations_pastyear %}     <!-- very rare case: no flight so far -->
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+
+
+<!-- This session is for "staff" only -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

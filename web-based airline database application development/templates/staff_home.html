@@ -1,0 +1,62 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+	<h1>The Airline Your are Working for is {{airline}} </h1>
+
+<!-- 	<input type="text" name = "blog" placeholder="post" required/> </br>
+	<input type="submit" value = Post /> -->
+<!-- </form>
+ -->
+ 
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+{% if upcoming_flight %}
+	<h4>Upcoming Flight Operated by My Airline in the next 30 days</h4>
+	<table>
+	<th>Departure Time</th>       <!--don't add newline symbol; continue-->
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	{% for line in upcoming_flight %}     <!-- "upcoming_flight"(result from "fetchall()") is a dictionary like thing! -->
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% endif %}
+
+{% if not upcoming_flight %}      <!-- no upcoming flight data, display message -->
+	<p class="noresult"><strong>No upcoming flight.</strong></p><br>
+{% endif %}
+
+<a href="/staff_all_flight">View My Flights</a><br>
+<a href="/create_new_flight">Create New Flights</a><br>
+<a href="/change_flight_status">Change Status of Flights</a><br>
+<a href="/add_airplane">Add New Airplanes</a><br>
+<a href="/add_airport">Add New Airports</a><br>
+<a href="/view_top5_agent">View Top 5 Booking Agents</a><br>
+<a href="/view_frequent_customer">View Frequent Customer</a><br>
+<a href="/view_ticket_report">View Report of Tickets Sold</a><br>
+<a href="/revenue_comparison">View Comparison of Revenue Earned</a><br>
+<a href="/view_top_destination">View Top 3 Destinations</a><br>
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

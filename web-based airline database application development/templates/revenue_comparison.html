@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+	<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+	<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+	ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
+</head>
+
+<style type="text/css">
+	html, body, #myChart{
+		height: 80%;
+		width: 80%
+	}
+</style>
+
+
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>Report about Revenue Comparison for My Airline</h2>
+
+
+
+<!-- IMPORTANT: DRAWING THE GRAPH!!!!!! -->
+
+<h3>My Airline Revenue Comparison by sales channel during the past month:</h3>
+<div id='myChart1'></div>
+<h3>My Airline Revenue Comparison by sales channel during the past year:</h3>
+<div id='myChart2'></div>
+
+
+<script type="text/javascript">
+	var recent_1year = {{recent_1year|safe }}
+	var recent_1month = {{recent_1month|safe }}
+	console.log(recent_1year, recent_1month)      //ready for debugging
+	//var title = "Your Airline's Monthly Ticket Sales Between " + {{monthlist|safe }}[0].toString() + " and " + {{monthlist|safe }}[{{monthlist|safe }}.length-1].toString()
+
+	//encapsule all drawing related/required information(data, style, layout etc.) into One configuration Object!
+// 	var myConfig = {
+// 	type: "bar",
+// 	plotarea: {
+// 	adjustLayout:true
+// 	},
+// 	scaleX: {
+// 	label:{
+// 	text: title
+// 	}, labels: MonthList
+// 	}, series: [{values: ValueList}]
+// 	};
+
+// zingchart.render({
+// 	id: 'myChart',
+// 	data: myConfig,
+// 	height: "100%",
+// 	width: "100%"
+// });
+
+var myConfig1 = {
+  "type":"pie",
+  "title":{
+    "text":"Agent vs. Direct Sales"
+  },"legend":{
+    "x":"75%",
+    "y":"25%",
+    "border-width":1,
+    "border-color":"gray",
+    "border-radius":"5px",
+    "header":{
+      "text":"Legend",
+      "font-family":"Georgia",
+      "font-size":12,
+      "font-color":"#3333cc",
+      "font-weight":"normal"
+    },
+    "marker":{
+      "type":"circle"
+    },
+    "toggle-action":"remove",
+    "minimize":true,
+    "icon":{
+      "line-color":"#9999ff"
+    },
+    "max-items":8,
+    "overflow":"scroll"
+  },
+  "plotarea":{
+    "margin-right":"30%",
+    "margin-top":"15%"
+  },
+  "plot":{
+    "value-box":{
+      "text":"%v",
+      "font-size":12,
+      "font-family":"Georgia",
+      "font-weight":"normal",
+          "placement":"out",
+          "font-color":"gray",
+    },
+    "tooltip":{
+      "text":"%t: %v (%npv%)",
+      "font-color":"black",
+      "font-family":"Georgia",
+      "text-alpha":1,
+      "background-color":"white",
+      "alpha":0.7,
+      "border-width":1,
+      "border-color":"#cccccc",
+      "line-style":"dotted",
+      "border-radius":"10px",
+      "padding":"10%",
+      "placement":"node:center"
+    },
+    "border-width":1,
+    "border-color":"#cccccc",
+    "line-style":"dotted"
+  },
+  "series":[
+    {"values":[recent_1month[0]],"background-color":"#cc0000", "text":"Agent Sales"},
+    {"values":[recent_1month[1]],"background-color":"#9933ff", "text":"Direct Sales"},
+  ]
+};
+ 
+zingchart.render({ 
+	id : 'myChart1', 
+	data : myConfig1, 
+	height: 400, 
+	width: "100%" 
+});
+var myConfig2 = {
+  "type":"pie",
+  "title":{
+    "text":"Agent vs. Direct Sales"
+  },"legend":{
+    "x":"75%",
+    "y":"25%",
+    "border-width":1,
+    "border-color":"gray",
+    "border-radius":"5px",
+    "header":{
+      "text":"Legend",
+      "font-family":"Georgia",
+      "font-size":12,
+      "font-color":"#3333cc",
+      "font-weight":"normal"
+    },
+    "marker":{
+      "type":"circle"
+    },
+    "toggle-action":"remove",
+    "minimize":true,
+    "icon":{
+      "line-color":"#9999ff"
+    },
+    "max-items":8,
+    "overflow":"scroll"
+  },
+  "plotarea":{
+    "margin-right":"30%",
+    "margin-top":"15%"
+  },
+  "plot":{
+    "value-box":{
+      "text":"%v",
+      "font-size":12,
+      "font-family":"Georgia",
+      "font-weight":"normal",
+          "placement":"out",
+          "font-color":"gray",
+    },
+    "tooltip":{
+      "text":"%t: %v (%npv%)",
+      "font-color":"black",
+      "font-family":"Georgia",
+      "text-alpha":1,
+      "background-color":"white",
+      "alpha":0.7,
+      "border-width":1,
+      "border-color":"#cccccc",
+      "line-style":"dotted",
+      "border-radius":"10px",
+      "padding":"10%",
+      "placement":"node:center"
+    },
+    "border-width":1,
+    "border-color":"#cccccc",
+    "line-style":"dotted"
+  },
+  "series":[
+    {"values":[recent_1year[0]],"background-color":"#cc0000", "text":"Agent Sales"},
+    {"values":[recent_1year[1]],"background-color":"#9933ff", "text":"Direct Sales"},
+  ]
+};
+ 
+zingchart.render({ 
+	id : 'myChart2', 
+	data : myConfig2, 
+	height: 400, 
+	width: "100%" 
+});
+
+</script>
+
+
+<!-- Important: this user case is "staff only" -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

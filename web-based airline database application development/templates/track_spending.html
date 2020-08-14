@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+	<head>
+		<!-- *** important: external JavaScript files ready for use directly here(especially preparing for draw charts later) (see the ZingChart JS CDN website for more how to import("Builds") instructions!!) -->
+		<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+		<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+		ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script></head>
+
+		<style type="text/css">
+		html, body, #myChart {
+  			height:80%;
+  			width:80%;
+			}
+
+		</style>
+	<body>
+		<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+		{% if message %}
+		<font size="5" color="red">Error: {{message}}</font>
+		{% endif %}
+	
+ 		<h2>Track Your Spending:</h2>
+		
+		{% if recent_6_month_data %}
+		{% if recent_12_month_data[0]["expense"] %}	
+		<h3> Your total spending in last 12 months is {{recent_12_month_data[0]["expense"]}}</h3>
+		{% endif %}
+		{% if not recent_12_month_data[0]["expense"] %}	
+		<h3> Your total spending in last 12 months is 0</h3>
+		{% endif %}
+
+		<h3> Your monthly spending in last 6 months is</h3>
+		<!-- {% for item in recent_6_month_data %}
+		<h3>{{item['month']}},{{item['expense']}}</h3>
+		{% endfor %} -->
+		<div id='myChart'></div>
+<!-- 		<div id="monthlist" data-monthlist={{monthlist}}></div>
+		<div id="valuelist" data-valuelist={{valuelist}}></div> -->
+	
+		{% endif %}
+
+
+		{% if not recent_6_month_data %}	
+		<h3> Your total spending between {{start_date}} and {{end_date}} is {{total_data[0]["expense"]}}</h3>
+		<h3> Your monthly spending between {{start_date}} and {{end_date}} is</h3>
+		<!-- {% for item in recent_6_month_data %}
+		<h3>{{item['month']}},{{item['expense']}}</h3>
+		{% endfor %} -->
+		<div id='myChart'></div>
+<!-- 		<div id="monthlist" data-monthlist={{monthlist}}></div>
+		<div id="valuelist" data-valuelist={{valuelist}}></div> -->
+	
+		{% endif %}
+
+
+	<form action="/track_spending_process" method="POST">    <!--Still monthly user input search text actually! -->
+		<h3>Enter the date range you want to track</h3>
+		<label>Start Date:</label>
+<!-- 		<input type="text" name = "start_date" placeholder="YYYY-MM" required/> </br> -->
+		<input type="month" name="start_date" placeholder="2019-01" required/></br>
+		<label>End Date:</label>
+<!-- 		<input type="text" name = "end_date" placeholder="YYYY-MM" required/></br> -->
+		<input type="month" name="end_date" placeholder="2019-05" required/></br>
+		<input type="submit" value = Track />
+
+
+        </form>
+ 		
+	<script type="text/javascript">
+	// var expense = [];
+	// var month_name = [];
+	// var datalist = {{recent_6_month_data}}.replace(/&#39;/g,"'");
+	// for (var i = 0; i < datalist.length; i++) {
+	// expense.push(datalist[i]["expense"]);
+	// month_name.push(datalist[i]["month"]);
+	// console.log(expense);
+	// }
+
+
+	// var MonthData=document.getElementById("monthlist").dataset.monthlist;
+ //    var ValueData=document.getElementById("valuelist").dataset.valuelist;
+    var MonthData={{monthlist|safe }}      //create a variable "MonthData"
+    var ValueData={{valuelist|safe }}
+   	console.log(MonthData, ValueData)    //print out the contents in Browser Control Panel
+   	var message = "Your Monthly Spending Between " + {{monthlist|safe }}[0].toString() + " and "+{{monthlist|safe }}[{{monthlist|safe }}.length-1].toString()
+
+	// ValueData = ValueData.replace("[",'').replace("]",'').split(",")
+	// for (var i = 0; i < ValueData.length; i++) {
+	// ValueData[i] = parseInt(ValueData[i])
+	// }
+	// MonthData = MonthData.replace("[",'').replace("]",'').split(",")
+	// for (var i = 0; i < MonthData.length; i++) {
+	// MonthData[i] = MonthData[i].toString()
+	// }
+	// console.log(MonthData, ValueData)
+
+	var myConfig = {
+  	type: "bar",
+  	plotarea: {
+    adjustLayout:true
+  	},
+    scaleX: {
+    label:{
+      text: message
+    },
+    labels: MonthData
+  	}, series: [
+    { values: ValueData}]
+
+};
+ 
+zingchart.render({ 
+	id : 'myChart', 
+	data : myConfig, 
+	height: "100%", 
+	width: "100%" 
+});
+</script>
+
+{% if customer %}
+<a href="/customer_home">Go Back</a><br>
+{% endif %}
+{% if agent %}
+<a href="/agent_home">Go Back</a><br>
+{% endif %}
+{% if staff %}
+<a href="/staff_home">Go Back</a><br>
+{% endif %}
+<a href="/logout">Logout</a>
+
+
+
+</body>
+</html>
+

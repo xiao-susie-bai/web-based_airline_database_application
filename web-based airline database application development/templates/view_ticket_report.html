@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+	<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+	<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+	ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
+
+</head>
+
+<style type="text/css">
+	html, body, #myChart{
+		height: 80%;
+		width: 80%
+	}
+</style>
+
+
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>Report about Ticket Sales for My Airline</h2>
+
+<h4>Total Number of Tickets Sold in the past month:</h4>
+{% if ticket_sales_past30days %}
+<h4>{{ticket_sales_past30days['ticket_sales']}}</h4>     <!-- ***IMPORTANT NOTICE: expected "ticket_sales_past30days" only has ONE RESULT RECORD, so it's simply A DICTIONARY! **And the query COLUMN NAME must align with name here!!!-->
+{% endif %}
+
+{% if not ticket_sales_past30days %}        <!--Normally this case would not be possible (because it will always have a number result from query, even "0") -->
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+<h4>Total Number of Tickets Sold in the past year:</h4>
+{% if ticket_sales_pastyear %}
+<h4>{{ticket_sales_pastyear['ticket_sales']}}</h4>     <!-- ***IMPORTANT NOTICE: expected "ticket_sales_pastyear" only has ONE RESULT RECORD, so it's simply A DICTIONARY! **And the query COLUMN NAME must align with name here!!!-->
+{% endif %}
+
+{% if not ticket_sales_pastyear %}        <!--Normally this case would not be possible (because it will always have a number result from query, even "0") -->
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<form action="/total_ticket_sales_filter" method = "Post">
+
+<h4>Filter by date range</h4>
+
+<label>Start Date:</label>
+<input type="date" name = "start_date" placeholder="YYYY-MM-DD" > </br>   <!--IMPORTANT notice here: user can input specific DATE here instead of just month -->
+<label>End Date:</label>
+<input type="date" name = "end_date" placeholder="YYYY-MM-DD" ></br>
+<input type="submit" value = Filter />
+
+</form>
+
+{% if ticket_sales_by_date %}
+	<h4>Total Number of Tickets Sold between {{start_date}} and {{end_date}}:</h4>
+	<h4>{{ticket_sales_by_date['ticket_sales']}}</h4>
+{% endif %}
+
+{% if not ticket_sales_by_date %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<!-- IMPORTANT: DRAWING THE GRAPH!!!!!! -->
+{% if ticket_sales_by_date %}
+<h3>My Airline's Monthly Ticket Sales between {{start_date}} and {{end_date}}:</h3>
+<div id='myChart'></div>
+{% endif %}
+
+{% if not ticket_sales_by_date %}      <!-- Default Graph: monthly data during the past year -->
+<h3>My Airline's Monthly Ticket Sales during the past year:</h3>
+<div id='myChart'></div>
+{% endif %}
+
+<script type="text/javascript">
+	var MonthList = {{monthlist|safe }}
+	var ValueList = {{valuelist|safe }}
+	console.log(MonthList, ValueList)      //ready for debugging
+	var title = "Your Airline's Monthly Ticket Sales Between " + {{monthlist|safe }}[0].toString() + " and " + {{monthlist|safe }}[{{monthlist|safe }}.length-1].toString()
+
+	//encapsule all drawing related/required information(data, style, layout etc.) into One configuration Object!
+	var myConfig = {
+	type: "bar",
+	plotarea: {
+	adjustLayout:true
+	},
+	scaleX: {
+	label:{
+	text: title
+	}, labels: MonthList
+	}, series: [{values: ValueList}]
+	};
+
+zingchart.render({
+	id: 'myChart',
+	data: myConfig,
+	height: "100%",
+	width: "100%"
+});
+
+</script>
+
+
+<!-- Important: this user case is "staff only" -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

@@ -1,0 +1,48 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+{% if confirmation_message %}
+<h4>{{confirmation_message}}</h4>
+{% endif %}
+
+
+
+<h3>Enter information for the new airport you want to create:</h3>
+
+<form action="/airport_creating_process" method = "Post">
+	<label>Airport Name:</label>
+	<input type="text" name="airport_name" placeholder="JFK" required/></br>
+	<label>Airport City:</label>
+	<input type="text" name="airport_city" placeholder="New York City" required/></br>
+	
+	<input type="submit" value = Create />
+</form> </br>
+
+{% if error %}
+<h4>{{error}}</h4>
+{% endif %}
+
+{% if invalid %}
+<h4>{{invalid}}</h4>
+{% endif %}
+
+
+<!-- This session is for "staff" only -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

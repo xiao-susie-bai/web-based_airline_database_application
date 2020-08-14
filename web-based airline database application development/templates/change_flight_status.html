@@ -1,0 +1,70 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+{% if confirmation_message %}
+<h4>{{confirmation_message}}</h4>
+{% endif %}
+
+<!-- All Flight Status (in the airline) Display -->
+
+<h4>All Flight Status in My Airline</h4>
+{% if all_flight_status %}
+	<table>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Time</th>
+	<th>Flight Status</th>
+{% for line in all_flight_status %}
+	<tr>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+{% endfor %}
+	</table> 
+
+{% endif %}
+
+{% if not all_flight_status %}      <!-- rare case: no existing flight in the airline -->
+	<p class="noresult"><strong>Your airline doesn't have any flight.</strong></p><br>
+{% endif %}
+
+
+<h3>Enter information for the flight you want to change the Status for:</h3>
+
+<form action="/flight_status_change_processing" method = "Post">
+	<label>Flight Number:</label>
+	<input type="text" name="flight_ID_for_status" placeholder="8893" required/></br>
+
+	<label>Departure Time:</label>
+	<input type="text" name="departure_time" placeholder="2019-03-21 10:55:00" required/></br>
+
+	<label>The Flight Status you want to enter now:</label>
+	<input type="text" name="status_now" placeholder="On Time" required/></br>
+
+	<input type="submit" value = Change />
+</form> </br>
+
+{% if error %}       <!-- if the flight number does not exist -->
+<h4>{{error}}</h4>
+{% endif %}
+
+
+<a href="/staff_home">Go Back</a><br>
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

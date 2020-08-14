@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 		<h2>My commission:</h2>
+
+<h4>Total Amount of Commission Received in the past 30 days:</h4>
+{% if total_commission_amount_past30 %}
+<h4>{{total_commission_amount_past30['total_commission']}}</h4>     <!-- ***IMPORTANT NOTICE: expected "total_commission_amount_past30" only has ONE RESULT RECORD, so it's simply A DICTIONARY! -->
+{% endif %}
+
+{% if not total_commission_amount_past30 %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<h4>Total Number of Tickets Sold in the past 30 days:</h4>
+{% if total_ticket_number_past30 %}
+<h4>{{total_ticket_number_past30['total_ticket']}}</h4>
+{% endif %}
+
+{% if not total_ticket_number_past30 %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<h4>Average Commission Received Per Ticket Booked in the past 30 days:</h4>
+{% if average_commission_past30 %}
+<h4>{{average_commission_past30['average_commission']}}</h4>
+{% endif %}
+
+
+<form action="/allcommission_filter" method = "Post">
+
+<h4>Filter by date range</h4>
+
+<label>Start Date:</label>
+<input type="date" name = "start_date" placeholder="YYYY-MM-DD" > </br>   <!--IMPORTANT notice here: user can input specific DATE here instead of just month -->
+<label>End Date:</label>
+<input type="date" name = "end_date" placeholder="YYYY-MM-DD" ></br>
+<input type="submit" value = Filter />
+
+</form>
+
+{% if total_commission_by_date %}
+	<h4>My Total Amount of Commission Received between {{start_date}} and {{end_date}}:</h4>
+	<h4>{{total_commission_by_date['total_commission']}}</h4>
+{% endif %}
+
+{% if total_ticket_number_by_date %}
+	<h4>My Total Number of Tickets Sold between {{start_date}} and {{end_date}}:</h4>
+	<h4>{{total_ticket_number_by_date['total_ticket']}}</h4>
+{% endif %}
+
+
+{% if not total_commission_by_date %}
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+{% if not total_ticket_number_by_date %}	
+	<p class="noresult"><strong>No result.</strong></p><br>
+{% endif %}
+
+
+<!-- Important: this user case is "agent only" -->
+<a href="/agent_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

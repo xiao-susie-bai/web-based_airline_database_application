@@ -1,0 +1,291 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/flight_search_process" method = "Post">
+	{% if not username %}
+	<h2>Welcome guest</h2>
+	{% endif %}
+	{% if username %}
+	<h2>Welcome {{username}}</h2>
+	{% endif %}
+	<h1>Flight Search</h1>
+	<h3>by departure and arrival airports... </h3>
+	<label for="departcity">Departure City/Airport:</label>
+	<input type="text" name = "Departure" placeholder="e.g. PVG"> </br>
+	<label for="arrivalcity">Arrival City/Airport:</label>
+	<input type="text" name = "Arrival" placeholder="e.g. JFK"> </br>
+	<label for="depart">Departure Date:</label>
+	<input type="date" id="DepartureDate" name="DepartureDate" placeholder="YYYY-MM-DD"></br>
+	<label for="back">Back Trip Departure Date (Enter to search for round trip):</label>
+	<input type="date" id="BackDate" name="BackDate" placeholder="YYYY-MM-DD">
+	<input type="submit" value = Search />
+	<h3>by flight number...</h3>
+	<label for="airline">Airline:</label>
+	<input type="text" name="airline" placeholder="e.g. China Eastern"></br>
+	<label for="flight_number">Flight Number:</label>
+	<input type="text" name="flight_id" placeholder="e.g. 1233"></br>
+	<label for="dept_date_by_ID">Departure Date:</label>
+	<input type="date" id="dept_date_by_ID" name="dept_date_by_ID" placeholder="YYYY-MM-DD"> <input type="submit" value = Search />
+
+
+</form>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+{% if arr_error %}
+<font color="red" size = 5 >{{arr_error}}</font><br>
+{% endif %}
+
+{% if not arr_error %}
+{% if any_result %}
+
+{% if not username %}
+<h4>Search Result</h4>
+<h5>Upcoming</h5>
+{% if search_result_future %}
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	{% for line in data_future %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% endif %}
+{% if not search_result_future %}
+<h5>No Result</h5>
+{% endif %}
+<h5>Past</h5>
+{% if search_result_past %}
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	{% for line in data_past %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% endif %}
+{% if not search_result_past %}
+<h5>No Result</h5>
+{% endif %}
+{% endif %}
+
+{% if customer %}
+
+
+<form action="/flight_purchase_process" method = "Post">
+
+	<h4>Search Result</h4>
+
+
+<h5>Upcoming</h5>
+{% if search_result_future %}
+<h5>(check one flight for single trip, two flights for round trip, to book)</h5>
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	<th>Price</th>
+	<th>Purchase</th>
+	{% for line in data_future %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+		<td>{{line['price']}}</td>
+		<td><input type="checkbox" name = {{line['flight_index']}}></td>	
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% if error %}
+	<p class="nocheckbox"><font size="5" color="red">Error: {{error}}</font></p>
+{% endif %}
+<input type="submit" value = Purchase>
+</form>
+
+{% endif %}
+{% if not search_result_future %}
+<h5>No Result</h5>
+{% endif %}
+
+
+<h5>Past</h5>
+{% if search_result_past %}
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	{% for line in data_past %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% endif %}
+{% if not search_result_past %}
+<h5>No Result</h5>
+{% endif %}
+
+
+
+
+{% endif %}
+
+{% if agent %}
+
+<form action="/agent_flight_purchase_process" method = "Post">
+<h4>Search Result</h4>
+<h5>Upcoming</h5>
+{% if search_result_future %}
+<h5>(check one flight for single trip, two flights for round trip, to book)</h5>
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	<th>Price</th>
+	<th>Purchase</th>
+	{% for line in data_future %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+		<td>{{line['price']}}</td>
+		<td><input type="checkbox" name = {{line['flight_index']}}></td>	
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% if error %}
+	<p class="nocheckbox"><font size="5" color="red">Error: {{error}}</font></p>
+{% endif %}
+
+<!-- new: must submit which customer the agent is purchasing for -->
+<label>The customer you are purchasing for:</label>
+<input type="text" name="for_customer" placeholder="baixiao@gmail.com" required/></br>
+<input type="submit" value = Purchase>
+</form>
+
+{% endif %}
+{% if not search_result_future %}
+<h5>No Result</h5>
+{% endif %}
+
+<h5>Past</h5>
+{% if search_result_past %}
+	<table>
+	<th>Departure Time</th>
+	<th>Arrival Time</th>
+	<th>Airline</th>
+	<th>Flight Number</th>
+	<th>Departure Airport</th>
+	<th>Arrival Airport</th>
+	<th>Status</th>
+	{% for line in data_past %}
+	<tr>
+		<td>{{line['departure_time']}}</td>
+		<td>{{line['arrival_time']}}</td>
+		<td>{{line['airline']}}</td>
+		<td>{{line['flight_ID']}}</td>
+		<td>{{line['departure_airport']}}</td>
+		<td>{{line['arrival_airport']}}</td>
+		<td>{{line['flight_status']}}</td>
+	</tr>
+	{% endfor %}
+	</table> <br>
+{% endif %}
+{% if not search_result_past %}
+<h5>No Result</h5>
+{% endif %}
+
+
+{% if customer_error %}
+	<p class="noresult"><strong>{{customer_error}}</strong></p>
+{% endif %}
+
+{% endif %}
+	
+<!-- IMPORTANT PENDING TO IMPLEMENT: " if staff "... -->
+
+{% endif %}
+
+
+{% if not any_result %}
+	<p class="noresult"><strong>No result</strong></p>
+{% endif %}
+{% endif %}
+
+
+{% if customer %}
+<a href="/customer_home">Go Back</a><br>
+{% endif %}
+{% if agent %}
+<a href="/agent_home">Go Back</a><br>
+{% endif %}
+{% if staff %}
+<a href="/staff_home">Go Back</a><br>
+{% endif %}
+{% if not customer %}
+{% if not agent %}
+{% if not staff %}
+<a href="/">Go Back</a><br>
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+</body>
+</html>

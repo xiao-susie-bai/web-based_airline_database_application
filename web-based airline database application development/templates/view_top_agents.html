@@ -1,0 +1,79 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+ 	<h2>Top 5 Booking Agents</h2>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+<h4>Top 5 Booking Agents Based On the Number of Tickets Sold For My Airline during the past month:</h4>
+{% if top5_agent_on_ticket_number_past_month %}
+	<table>
+	<th>Booking Agent Email</th>
+	<th>Total Ticket Sales During Past Month</th>
+{% for line in top5_agent_on_ticket_number_past_month %}
+	<tr>
+		<td>{{line['email_agent']}}</td>
+		<td>{{line['ticket_sales']}}</td>        <!--Important: the query column name from the database query must be set as "ticket_sales" here! -->
+	</tr>
+{% endfor %}
+	</table>
+{% endif %}
+
+{% if not top5_agent_on_ticket_number_past_month %}
+	<p class="noresult"><strong>Can't find any result</strong></p><br>
+{% endif %}
+
+
+<h4>Top 5 Booking Agents Based On the Number of Tickets Sold for My Airline during the past year:</h4>
+{% if top5_agent_on_ticket_number_past_year %}
+	<table>
+	<th>Booking Agent Email</th>
+	<th>Total Ticket Sales During Past Year</th>
+{% for line in top5_agent_on_ticket_number_past_year %}
+	<tr>
+		<td>{{line['email_agent']}}</td>
+		<td>{{line['ticket_sales']}}</td>        <!--Important: the query column name from the database query must be set as "ticket_sales" here! -->
+	</tr>
+{% endfor %}
+	</table>
+{% endif %}
+
+{% if not top5_agent_on_ticket_number_past_year %}
+	<p class="noresult"><strong>Can't find any result</strong></p><br>
+{% endif %}
+
+
+<h4>Top 5 Booking Agents Based On Total Commission from Tickets Sold for My Airline during the past year:</h4>
+{% if top5_agent_on_total_commission_past_year %}
+	<table>
+	<th>Booking Agent Email</th>
+	<th>Total Commission During Past Year</th>
+{% for line in top5_agent_on_total_commission_past_year %}
+	<tr>
+		<td>{{line['email_agent']}}</td>
+		<td>{{line['total_commission']}}</td>      <!-- * Important: the query column name from the database query must be set as "total_commission" here! -->
+	</tr>
+{% endfor %}
+	</table>
+{% endif %}
+
+{% if not top5_agent_on_total_commission_past_year %}
+	<p class="noresult"><strong>Can't find any result</strong></p><br>
+{% endif %}
+
+
+<!-- Important: this user case is "staff only" -->
+<a href="/staff_home">Go Back</a><br>
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

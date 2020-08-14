@@ -1,0 +1,65 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}, your account type is {{user_type}} </h1>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+
+{% if confirmation_message %}
+<h4>{{confirmation_message}}</h4>
+{% endif %}
+
+<!-- all airplanes owned by the airline as DEFAULT VIEW -->
+
+<h4>All Airplanes owned by My Airline</h4>
+{% if all_airplane %}    <!-- ***IMPORTANT: "if" statement used to test if a variable is define/not empty(the case here?)/not False! -->
+	<table>
+	<th>Airline</th>
+	<th>Airplane ID</th>
+	<th>Seat Capacity</th>
+{% for line in all_airplane %}
+	<tr>
+		<td>{{line['airline']}}</td>
+		<td>{{line['airplane_ID']}}</td>
+		<td>{{line['seat_capacity']}}</td>
+	</tr>
+{% endfor %}
+	</table> 
+
+{% endif %}
+
+{% if not all_airplane %}
+	<p class="noresult"><strong>Your airline doesn't have any airplane.</strong></p><br>
+{% endif %}
+
+<h3>Enter information for the new airplane you want to create:</h3>
+
+<form action="/airplane_creating_process" method = "Post">
+	<label>Airplane ID:</label>
+	<input type="text" name="airplane_ID" placeholder="B-0909" required/></br>
+	<label>Seat Capacity:</label>
+	<input type="text" name="seat_capacity" placeholder="120" required/></br>
+	
+	<input type="submit" value = Create />
+</form> </br>
+
+{% if error %}
+<h4>{{error}}</h4>
+{% endif %}
+
+
+<!-- This session is for "staff" only -->
+<a href="/staff_home">Go Back</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>
