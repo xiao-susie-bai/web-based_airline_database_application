@@ -6,7 +6,7 @@ The main objective of this comprehensive project is to design and implement a re
 In this project, firstly, the database is framed through the design of an E-R diagram, translated to the relational schema on which the actual implementation is based. Essential information about **airlines, customers, staff, airplanes, airports, flights and air tickets** is added to initialize the database. The web-based application is developed under the Flask framework, using Python, MySQL and HTML/JS/CSS. The use cases of the application can be conveniently tested on a Apache/MySQL/PHP (xampp, wamp, lamp, mamp etc. depending on the OS) package, which includes MySQL and phpMyAdmin GUI (free download e.g.: https://www.apachefriends.org/download.html; (Windows) http://www.wampserver.com/en/download.php; (Mac) https://www.mamp.info/en/mamp/mac/).
 
 
-**More about what the project does!:**
+### More about how the project works!:
 
 In this project, there are several airports, each consisting of a unique name and a city; and several airlines, each with a unique name. Each airline owns several airplanes, where each airplane has a unique ID number within that airline and the number of seats on it. Each airline operates flights, which consist of the airline, a unique flight number within that airline, departure airport, departure time, arrival airport, arrival time, base price, and the ID number of the airplane for the flight.
 
@@ -20,7 +20,7 @@ When a booking agent purchases a ticket on behalf of a customer, he/she receives
 
 An airline staff has the authority to create new flights for the particular airline they work for, set the ticket base price, add new airplanes, set flight statuses, and more.
 
-**Use Cases Specification:**
+### Use Cases Specification:
 
 #### Public (any users whether logged in or not logged in):
 
